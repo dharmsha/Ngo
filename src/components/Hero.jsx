@@ -1,257 +1,225 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
-import { 
-  Box, Container, Typography, Stack, Grid, Button, Chip, 
-  Modal, TextField, IconButton, Fade, Backdrop 
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { 
-  Heart, MapPin, Shirt, Baby, BookOpen, 
-  ShieldCheck, Sparkles, ArrowUpRight, X, Send, User, Phone
-} from 'lucide-react';
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  BookOpen,
+  HeartHandshake,
+  Users,
+  Sprout,
+} from "lucide-react";
 
-// --- Styled Components ---
-const GlassCard = styled(motion.div)({
-  background: 'rgba(10, 10, 15, 0.95)',
-  backdropFilter: 'blur(20px)',
-  borderRadius: '28px',
-  padding: '24px',
-  border: '1px solid rgba(255, 255, 255, 0.05)',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '190px',
-  cursor: 'pointer',
-  position: 'relative',
-  '&:hover': {
-    border: '1px solid rgba(249, 115, 22, 0.5)',
-    boxShadow: '0 15px 40px rgba(249, 115, 22, 0.15)',
-  }
-});
-
-const StyledInput = styled(TextField)({
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '16px',
-    backgroundColor: '#f8fafc',
-    '& fieldset': { borderColor: '#e2e8f0' },
-    '&:hover fieldset': { borderColor: '#f97316' },
-    '&.Mui-focused fieldset': { borderColor: '#f97316' },
-  },
-});
-
-const Hero = () => {
-  // --- Fixed: No cascading renders, safe useEffect ---
-  const [isClient, setIsClient] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', phone: '', scheme: '', address: '' });
-
-  // ✅ FIXED: useEffect now runs safely with cleanup and no dependencies issues
-  useEffect(() => {
-    // Small delay to ensure smooth hydration
-    const timer = setTimeout(() => {
-      setIsClient(true);
-    }, 0);
-    
-    return () => clearTimeout(timer);
-  }, []); // Empty dependency array - runs once after mount
-
-  const schemes = [
-    { title: "Beti Samman", icon: <Heart color="#f97316" />, link: "/schemes/beti-samman", tag: "Wedding" },
-    { title: "Margdarshan", icon: <MapPin color="#f97316" />, link: "/schemes/margdarshan", tag: "Career" },
-    { title: "Anna Vastra", icon: <Shirt color="#f97316" />, link: "/schemes/anna-vastra", tag: "Basic Needs" },
-    { title: "Bachpan Bachao", icon: <Baby color="#f97316" />, link: "/schemes/bachpan-bachao", tag: "Safety" },
-    { title: "Shiksha Help", icon: <BookOpen color="#f97316" />, link: "/schemes/shiksha", tag: "Education" },
-    { title: "Fees Maafi", icon: <ShieldCheck color="#f97316" />, link: "/schemes/fees-maafi", tag: "Relief" },
-  ];
-
-  const handleWhatsApp = (e) => {
-    e.preventDefault();
-    const message = `*Nayi Registration 2026*%0A%0A👤 *Naam:* ${formData.name}%0A📞 *WhatsApp:* ${formData.phone}%0A📋 *Yojana:* ${formData.scheme}%0A📍 *Pata:* ${formData.address}`;
-    window.open(`https://wa.me/919415289162?text=${message}`, '_blank');
-    setOpen(false);
-    // Reset form after submit
-    setFormData({ name: '', phone: '', scheme: '', address: '' });
-  };
-
-  // Show loading skeleton during SSR
-  if (!isClient) {
-    return (
-      <Box sx={{ 
-        minHeight: '100vh', 
-        bgcolor: '#ffffff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Typography sx={{ color: '#f97316' }}>Loading...</Typography>
-      </Box>
-    );
-  }
-
+export default function Hero() {
   return (
-    <Box sx={{ 
-      minHeight: '100vh',
-      background: 'radial-gradient(circle at 50% -20%, rgba(249, 115, 22, 0.08), transparent), #ffffff',
-      pt: { xs: 15, md: 22 }, 
-      pb: 10,
-      position: 'relative'
-    }}>
-      
-      <Container maxWidth="lg">
-        {/* --- Hero Text Section --- */}
-        <Box sx={{ textAlign: 'center', mb: { xs: 8, md: 15 } }}>
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <Chip 
-              icon={<Sparkles size={14} color="#f97316" />} 
-              label="Beti Samman & Jan Kalyan Mission" 
-              sx={{ mb: 3, bgcolor: 'rgba(249, 115, 22, 0.08)', color: '#f97316', fontWeight: 800, px: 2, border: '1px solid rgba(249, 115, 22, 0.2)' }}
-            />
-            <Typography variant="h1" sx={{ fontWeight: 950, color: '#0f172a', fontSize: { xs: '2.5rem', md: '5rem' }, lineHeight: 1, mb: 3, letterSpacing: '-0.04em' }}>
-              Empowering Lives, <br />
-              <span style={{ color: '#f97316' }}>Building Futures.</span>
-            </Typography>
-            <Typography variant="h6" sx={{ color: '#64748b', mb: 5, mx: 'auto', maxWidth: '650px', fontWeight: 400, fontSize: '1.1rem' }}>
-              Ghazipur ka sabse bada jan kalyan portal. Humara maqsad har zarooratmand tak sarkari aur gair-sarkari suvidhaein pahunchana hai.
-            </Typography>
-            
-            <Button 
-              onClick={() => setOpen(true)}
-              variant="contained" 
-              sx={{ 
-                bgcolor: '#0f172a', color: '#fff', px: 6, py: 2.2, borderRadius: '20px', fontWeight: 800, fontSize: '1.1rem',
-                boxShadow: '0 20px 40px rgba(15, 23, 42, 0.2)', '&:hover': { bgcolor: '#f97316', transform: 'scale(1.05)' }, transition: '0.4s ease' 
-              }}
-            >
-              Get Started Now
-            </Button>
+    <section className="relative min-h-[calc(100vh-80px)] overflow-hidden bg-[#f8faf5]">
+
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute left-[-120px] top-20 h-72 w-72 rounded-full bg-green-200/30 blur-3xl" />
+        <div className="absolute bottom-[-100px] right-[-80px] h-80 w-80 rounded-full bg-yellow-200/30 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-12 px-5 py-12 lg:grid-cols-2 lg:px-8">
+
+        {/* LEFT CONTENT */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="z-10"
+        >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-200 bg-white px-4 py-2 text-sm font-semibold text-green-700 shadow-sm"
+          >
+            <Sprout size={18} />
+            शिक्षा • सम्मान • अवसर
           </motion.div>
-        </Box>
 
-        {/* --- Schemes Section --- */}
-        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
-          <Typography variant="h4" sx={{ fontWeight: 900, color: '#0f172a' }}>Our Initiatives</Typography>
-        </Stack>
+          {/* Heading */}
+          <h1 className="max-w-3xl text-4xl font-black leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            किसान, युवा और
+            <span className="block text-green-700">
+              समाज का विकास
+            </span>
+            <span className="block">
+              हमारी प्राथमिकता
+            </span>
+          </h1>
 
-        <Grid container spacing={2.5}>
-          {schemes.map((scheme, index) => (
-            <Grid item xs={6} sm={4} md={2} key={index}>
-              <Link href={scheme.link} style={{ textDecoration: 'none' }}>
-                <GlassCard
-                  whileHover={{ y: -8 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Stack direction="row" justifyContent="space-between">
-                    <Box sx={{ bgcolor: 'rgba(249, 115, 22, 0.12)', p: 1.2, borderRadius: '14px', display: 'flex' }}>
-                      {scheme.icon}
-                    </Box>
-                    <ArrowUpRight size={18} color="rgba(255,255,255,0.2)" />
-                  </Stack>
-                  <Box>
-                    <Typography variant="caption" sx={{ color: '#f97316', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1.2, fontSize: '0.65rem' }}>
-                      {scheme.tag}
-                    </Typography>
-                    <Typography variant="h6" sx={{ color: '#fff', fontWeight: 800, mt: 0.5, lineHeight: 1.2 }}>
-                      {scheme.title}
-                    </Typography>
-                  </Box>
-                </GlassCard>
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+          {/* Description */}
+          <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+            गाजीपुर प्रतिभा खोज संगठन का उद्देश्य शोषित, गरीब और सामाजिक
+            रूप से पिछड़े वर्गों को शिक्षा, सम्मान और अवसर उपलब्ध कराना है।
+            शिक्षा, रोजगार और सामाजिक न्याय के माध्यम से एक सशक्त समाज
+            का निर्माण हमारा संकल्प है।
+          </p>
 
-      {/* --- APPLICATION FORM MODAL --- */}
-      <Modal 
-        open={open} 
-        onClose={() => setOpen(false)} 
-        closeAfterTransition 
-        BackdropComponent={Backdrop} 
-        BackdropProps={{ timeout: 500, sx: { backdropFilter: 'blur(12px)', bgcolor: 'rgba(0,0,0,0.4)' } }}
-      >
-        <Fade in={open}>
-          <Box sx={{
-            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-            width: { xs: '92%', sm: 480 }, bgcolor: '#ffffff', borderRadius: '32px', p: 4, boxShadow: '0 30px 70px rgba(0,0,0,0.3)', outline: 'none'
-          }}>
-            <Stack direction="row" justifyContent="space-between" mb={4}>
-              <Box>
-                <Typography variant="h5" sx={{ fontWeight: 900, color: '#0f172a' }}>Apply for Welfare</Typography>
-                <Typography variant="caption" sx={{ color: '#64748b' }}>Please fill your correct details</Typography>
-              </Box>
-              <IconButton onClick={() => setOpen(false)} sx={{ bgcolor: '#f8fafc' }}><X size={20} /></IconButton>
-            </Stack>
+          {/* Buttons */}
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
 
-            <form onSubmit={handleWhatsApp}>
-              <Stack spacing={2.5}>
-                <StyledInput 
-                  fullWidth 
-                  label="Full Name" 
-                  required 
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})} 
-                  InputProps={{ startAdornment: <User size={18} style={{marginRight: 10, color: '#94a3b8'}} /> }} 
-                />
-                <StyledInput 
-                  fullWidth 
-                  label="WhatsApp Number" 
-                  required 
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})} 
-                  InputProps={{ startAdornment: <Phone size={18} style={{marginRight: 10, color: '#94a3b8'}} /> }} 
-                />
-                
-                <StyledInput 
-                  fullWidth 
-                  label="Choose Scheme" 
-                  select 
-                  SelectProps={{ native: true }} 
-                  value={formData.scheme}
-                  onChange={(e) => setFormData({...formData, scheme: e.target.value})} 
-                  InputProps={{ startAdornment: <Sparkles size={18} style={{marginRight: 10, color: '#94a3b8'}} /> }}
-                >
-                  <option value="">-- Select Yojana --</option>
-                  {schemes.map((s, i) => <option key={i} value={s.title}>{s.title}</option>)}
-                </StyledInput>
+            <Link
+              href="/membership"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-6 py-3.5 font-bold text-white shadow-lg shadow-green-700/20 transition hover:-translate-y-1 hover:bg-green-800"
+            >
+              हमारे साथ जुड़ें
+              <ArrowRight
+                size={19}
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </Link>
 
-                <StyledInput 
-                  fullWidth 
-                  label="Village / Town" 
-                  multiline rows={2} 
-                  value={formData.address}
-                  onChange={(e) => setFormData({...formData, address: e.target.value})} 
-                  InputProps={{ startAdornment: <MapPin size={18} style={{marginRight: 10, color: '#94a3b8'}} /> }} 
-                />
-                
-                <Box sx={{ p: 2, bgcolor: '#fff7ed', borderRadius: '16px', border: '1px solid #ffedd5' }}>
-                   <Typography sx={{ color: '#c2410c', fontSize: '0.85rem', fontWeight: 600, textAlign: 'center' }}>
-                     <ShieldCheck size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />
-                     Verification will be done via home visit.
-                   </Typography>
-                </Box>
+            <Link
+              href="/programs"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 font-bold text-slate-700 transition hover:-translate-y-1 hover:border-green-600 hover:text-green-700"
+            >
+              हमारे कार्यक्रम
+            </Link>
 
-                <Button 
-                  type="submit" variant="contained" fullWidth 
-                  sx={{ 
-                    bgcolor: '#f97316', py: 2.2, borderRadius: '16px', fontWeight: 800, fontSize: '1.05rem',
-                    boxShadow: '0 10px 25px rgba(249, 115, 22, 0.3)', '&:hover': { bgcolor: '#ea580c' } 
-                  }} 
-                  endIcon={<Send size={18} />}
-                >
-                  Submit Application
-                </Button>
-              </Stack>
-            </form>
-          </Box>
-        </Fade>
-      </Modal>
-    </Box>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
+
+            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <BookOpen className="mb-2 text-green-700" size={22} />
+              <p className="text-xl font-black text-slate-900">शिक्षा</p>
+              <p className="text-xs text-slate-500">सबके लिए</p>
+            </div>
+
+            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <Users className="mb-2 text-green-700" size={22} />
+              <p className="text-xl font-black text-slate-900">युवा</p>
+              <p className="text-xs text-slate-500">सशक्तिकरण</p>
+            </div>
+
+            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <HeartHandshake className="mb-2 text-green-700" size={22} />
+              <p className="text-xl font-black text-slate-900">न्याय</p>
+              <p className="text-xs text-slate-500">समान अवसर</p>
+            </div>
+
+          </div>
+        </motion.div>
+
+        {/* RIGHT FARMER VISUAL */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9 }}
+          className="relative"
+        >
+
+          {/* Main Image */}
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="relative mx-auto aspect-[4/5] w-full max-w-[520px] overflow-hidden rounded-[2rem] border-8 border-white shadow-2xl"
+          >
+            <Image
+              src="/abc.jpeg"
+              alt="किसान और ग्रामीण विकास"
+              fill
+              priority
+              className="object-cover"
+            />
+
+            {/* Image Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+            {/* Image Text */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <div className="mb-2 flex items-center gap-2">
+                <Sprout size={20} />
+                <span className="font-semibold">हमारा संकल्प</span>
+              </div>
+
+              <h2 className="text-2xl font-bold sm:text-3xl">
+                मेहनत को मिले
+                <span className="text-yellow-300"> सम्मान</span>
+              </h2>
+
+              <p className="mt-2 text-sm text-white/85">
+                किसान • शिक्षा • रोजगार • अवसर
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Floating Card - Top */}
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -left-3 top-8 hidden rounded-2xl border border-white/70 bg-white/95 p-4 shadow-xl backdrop-blur-sm sm:block lg:-left-8"
+          >
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-green-100 p-3 text-green-700">
+                <Sprout size={22} />
+              </div>
+
+              <div>
+                <p className="text-xs font-medium text-slate-500">
+                  ग्रामीण विकास
+                </p>
+                <p className="font-bold text-slate-900">
+                  नई उम्मीद
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Floating Card - Bottom */}
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{
+              duration: 4.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute -bottom-5 right-2 rounded-2xl border border-white/70 bg-white/95 p-4 shadow-xl backdrop-blur-sm sm:right-[-15px]"
+          >
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-yellow-100 p-3 text-yellow-700">
+                <HeartHandshake size={22} />
+              </div>
+
+              <div>
+                <p className="text-xs font-medium text-slate-500">
+                  हमारा लक्ष्य
+                </p>
+                <p className="font-bold text-slate-900">
+                  समान अवसर
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Decorative Circle */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="absolute -right-8 -top-8 hidden h-24 w-24 rounded-full border-2 border-dashed border-green-300 lg:block"
+          />
+
+        </motion.div>
+
+      </div>
+    </section>
   );
-};
-
-export default Hero;
+}

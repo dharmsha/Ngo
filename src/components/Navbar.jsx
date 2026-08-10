@@ -1,375 +1,343 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Menu, X, Heart, GraduationCap, Trophy, Phone, Home, ArrowRight, ChevronDown, User, LogIn } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  GraduationCap,
+  HeartHandshake,
+  Phone,
+  Mail,
+  MapPin,
+  Sparkles,
+  Trophy,
+  Users,
+  Target,
+} from "lucide-react";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const navItems = [
+  { name: "होम", href: "/" },
+  { name: "हमारे बारे में", href: "/about" },
+  {
+    name: "कार्यक्रम",
+    dropdown: [
+      { name: "शिक्षा अभियान", href: "/programs/education" },
+      { name: "कौशल विकास", href: "/programs/skill-development" },
+      { name: "स्वास्थ्य सेवा", href: "/programs/health" },
+      { name: "महिला सशक्तिकरण", href: "/programs/women-empowerment" },
+      { name: "युवा विकास", href: "/programs/youth-development" },
+      { name: "सामाजिक न्याय", href: "/programs/social-justice" },
+    ],
+  },
+  { name: "हमारा उद्देश्य", href: "/objective" },
+  { name: "हमारा संकल्प", href: "/mission" },
+  { name: "सदस्यता", href: "/membership" },
+  { name: "संपर्क करें", href: "/contact" },
+];
+
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [programOpen, setProgramOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState('Home');
-  const [showDropdown, setShowDropdown] = useState(null);
-
-  // Move navLinks outside of useEffect but before it's used
-  const navLinks = [
-    { name: 'Home', href: '/', icon: <Home size={18} />, id: 'home' },
-    { name: 'About Us', href: 'about', icon: <GraduationCap size={18} />, id: 'about' },
-    { 
-      name: 'Winners', 
-      href: '#winners', 
-      icon: <Trophy size={18} />, 
-      id: 'winners',
-      dropdown: [
-        { name: '2026 Winners', href: 'winners-2026' },
-        { name: '2025 Winners', href: 'winners-2025' },
-        { name: 'Hall of Fame', href: 'hall-of-fame' },
-      ]
-    },
-    { name: 'Contact', href: 'contact', icon: <Phone size={18} />, id: 'contact' },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      
-      // Update active link based on scroll position
-      const sections = navLinks.map(link => link.href.replace('#', ''));
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveLink(section.charAt(0).toUpperCase() + section.slice(1));
-            break;
-          }
-        }
-      }
+      setScrolled(window.scrollY > 10);
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // Empty dependency array is fine now since navLinks is stable
-
-  const handleLinkClick = (linkName) => {
-    setActiveLink(linkName);
-    setIsOpen(false);
-    setShowDropdown(null);
-  };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg py-2' 
-          : 'bg-gradient-to-b from-white/80 to-transparent backdrop-blur-sm py-4'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            
-            {/* NGO Logo Section with hover effect */}
-            <Link 
-              href="/" 
-              className="flex items-center gap-3 group relative"
-              onClick={() => setActiveLink('Home')}
+      {/* Top Information Bar - Enhanced */}
+      <div className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white md:block">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5 text-sm">
+          <div className="flex items-center gap-6">
+            <motion.p 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 text-amber-300/90 font-medium"
             >
-              <motion.div 
-                whileHover={{ rotate: [0, -10, 10, -5, 0] }}
-                transition={{ duration: 0.5 }}
-                className="relative"
+              <Sparkles size={14} className="text-amber-400" />
+              शिक्षा • रोजगार • सामाजिक न्याय
+            </motion.p>
+            <div className="flex items-center gap-4 text-slate-400 text-xs">
+              <span className="flex items-center gap-1">
+                <Phone size={12} />
+                +91 88817 03633
+              </span>
+              <span className="w-px h-4 bg-slate-700"></span>
+              <span className="flex items-center gap-1">
+                <Mail size={12} />
+                info@pratibhakhoj.org
+              </span>
+            </div>
+          </div>
+
+          <motion.p 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="font-medium text-sm"
+          >
+            🌳 एक पेड़ माँ के नाम • 
+            <span className="text-amber-300 ml-1 font-bold">श्री अरविंद भूषण सरकार</span>
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Main Navbar - Enhanced */}
+      <motion.header 
+        initial={{ y: -10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? "border-b border-slate-200/80 bg-white/95 shadow-lg backdrop-blur-md" 
+            : "border-b border-slate-200/50 bg-white/90 backdrop-blur-sm"
+        }`}
+      >
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+
+          {/* Logo - Enhanced */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 group"
+            onClick={() => setMobileOpen(false)}
+          >
+            <motion.div 
+              whileHover={{ rotate: [0, -5, 5, -3, 0] }}
+              transition={{ duration: 0.5 }}
+              className="relative h-14 w-14 overflow-hidden rounded-2xl border-2 border-amber-400 bg-gradient-to-br from-amber-50 to-white shadow-md group-hover:shadow-xl transition-all duration-300"
+            >
+              <Image
+                src="/abc.jpeg"
+                alt="गाजीपुर प्रतिभा खोज संगठन Logo"
+                fill
+                priority
+                className="object-contain p-1.5"
+              />
+            </motion.div>
+
+            <div className="leading-tight">
+              <motion.h1 
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-lg font-extrabold text-slate-900 sm:text-xl tracking-tight"
               >
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <Heart size={24} fill="white" />
-                </div>
-                <motion.div 
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"
-                />
-              </motion.div>
-              
-              <div className="flex flex-col">
-                <motion.span 
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className={`text-xl font-black leading-none tracking-tight transition-colors duration-300 ${
-                    scrolled ? 'text-slate-900' : 'text-slate-800'
-                  }`}
-                >
-                  GHAZIPUR
-                </motion.span>
-                <span className="text-[10px] font-bold text-orange-600 tracking-[0.2em] uppercase">
-                  Pratibha Khoj
+                गाजीपुर प्रतिभा खोज
+              </motion.h1>
+
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[10px] font-bold text-amber-600 tracking-[0.15em] uppercase">
+                  संगठन
+                </span>
+                <span className="w-px h-3 bg-slate-300"></span>
+                <span className="text-[10px] font-medium text-slate-500">
+                  शिक्षा • सम्मान • अवसर
                 </span>
               </div>
-            </Link>
+            </div>
+          </Link>
 
-            {/* Desktop Links with hover effects */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <div 
-                  key={link.name}
-                  className="relative"
-                  onMouseEnter={() => link.dropdown && setShowDropdown(link.name)}
-                  onMouseLeave={() => setShowDropdown(null)}
+          {/* Desktop Navigation - Enhanced */}
+          <nav className="hidden items-center gap-0.5 lg:flex">
+            {navItems.map((item, index) => {
+              if (item.dropdown) {
+                return (
+                  <motion.div 
+                    key={item.name} 
+                    className="group relative"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <button
+                      onClick={() => setProgramOpen(!programOpen)}
+                      className="flex items-center gap-1 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-amber-50 hover:text-amber-700 hover:scale-105"
+                    >
+                      {item.name}
+                      <ChevronDown
+                        size={15}
+                        className="transition-transform duration-300 group-hover:rotate-180"
+                      />
+                    </button>
+
+                    {/* Dropdown - Enhanced */}
+                    <div className="invisible absolute left-0 top-full mt-1 w-64 translate-y-2 rounded-2xl border border-slate-100 bg-white/95 p-2 opacity-0 shadow-2xl backdrop-blur-sm transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                      <div className="absolute -top-2 left-6 w-4 h-4 bg-white rotate-45 border-t border-l border-slate-100"></div>
+                      {item.dropdown.map((subItem, idx) => (
+                        <motion.div
+                          key={subItem.name}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.05 }}
+                        >
+                          <Link
+                            href={subItem.href}
+                            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:text-amber-700 hover:pl-5"
+                          >
+                            <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
+                              <GraduationCap size={15} />
+                            </div>
+                            {subItem.name}
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                );
+              }
+
+              return (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
                 >
                   <Link
-                    href={link.href}
-                    onClick={() => handleLinkClick(link.name)}
-                    className={`relative text-sm font-bold transition-all duration-300 group flex items-center gap-1 ${
-                      activeLink === link.name 
-                        ? 'text-orange-600' 
-                        : 'text-slate-700 hover:text-orange-600'
-                    }`}
+                    href={item.href}
+                    className="relative rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-700 transition-all duration-200 hover:bg-amber-50 hover:text-amber-700 hover:scale-105"
                   >
-                    {link.name}
-                    {link.dropdown && (
-                      <ChevronDown size={16} className={`transition-transform duration-300 ${showDropdown === link.name ? 'rotate-180' : ''}`} />
-                    )}
-                    
-                    {/* Active indicator */}
-                    {activeLink === link.name && (
-                      <motion.div
-                        layoutId="activeNav"
-                        className="absolute -bottom-2 left-0 right-0 h-0.5 bg-orange-600 rounded-full"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
+                    {item.name}
+                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-400 transition-all duration-300 group-hover:w-1/2 group-hover:left-1/4"></span>
                   </Link>
-
-                  {/* Dropdown Menu */}
-                  {link.dropdown && showDropdown === link.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50"
-                    >
-                      {link.dropdown.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </div>
-              ))}
-              
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3">
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 text-sm font-bold text-slate-700 hover:text-orange-600 transition-colors flex items-center gap-2"
-                >
-                  <LogIn size={16} />
-                  Login
-                </motion.button>
-
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-7 py-3 rounded-xl font-bold shadow-lg shadow-orange-200 hover:shadow-xl hover:from-orange-600 hover:to-orange-700 hover:-translate-y-0.5 transition-all flex items-center gap-2 group"
-                >
-                  Apply Now
-                  <motion.div
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <ArrowRight size={16} />
-                  </motion.div>
-                </motion.button>
-              </div>
-            </div>
-
-            {/* Mobile Menu Button with animation */}
-            <motion.button 
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-3 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 text-orange-600 relative overflow-hidden group"
-            >
-              <motion.div
-                animate={{ rotate: isOpen ? 90 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
-              </motion.div>
-              <motion.div
-                className="absolute inset-0 bg-orange-200"
-                initial={{ scale: 0, opacity: 0 }}
-                whileTap={{ scale: 2, opacity: 0.3 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Sidebar Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            {/* Dark background blur with click outside */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[110] lg:hidden"
-            />
-            
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-[85%] max-w-sm bg-gradient-to-b from-white to-slate-50 z-[120] lg:hidden flex flex-col shadow-2xl"
-            >
-              {/* Header */}
-              <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="p-6 border-b border-slate-100 flex justify-between items-center"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center text-white">
-                    <Heart size={20} fill="white" />
-                  </div>
-                  <div>
-                    <span className="font-bold text-slate-900">Menu</span>
-                    <p className="text-xs text-slate-500">Navigation</p>
-                  </div>
-                </div>
-                <motion.button 
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsOpen(false)} 
-                  className="p-2 bg-white shadow-md rounded-full text-slate-600 hover:bg-slate-50 transition-colors"
-                >
-                  <X size={20} />
-                </motion.button>
-              </motion.div>
-
-              {/* Navigation Links */}
-              <div className="flex-1 px-6 py-8 overflow-y-auto">
-                <div className="space-y-2">
-                  {navLinks.map((link, index) => (
-                    <motion.div
-                      key={link.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => handleLinkClick(link.name)}
-                        className={`flex items-center gap-4 p-4 rounded-2xl transition-all group ${
-                          activeLink === link.name 
-                            ? 'bg-gradient-to-r from-orange-50 to-orange-100 text-orange-600' 
-                            : 'hover:bg-slate-100 text-slate-700'
-                        }`}
-                      >
-                        <span className={`p-2 rounded-xl transition-colors ${
-                          activeLink === link.name 
-                            ? 'bg-orange-600 text-white' 
-                            : 'bg-slate-100 text-slate-600 group-hover:bg-orange-600 group-hover:text-white'
-                        }`}>
-                          {link.icon}
-                        </span>
-                        <span className="font-bold text-base">{link.name}</span>
-                        
-                        {link.dropdown && (
-                          <ChevronDown size={16} className="ml-auto text-slate-400" />
-                        )}
-                      </Link>
-
-                      {/* Mobile Dropdown */}
-                      {link.dropdown && activeLink === link.name && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          className="ml-14 mt-1 space-y-1"
-                        >
-                          {link.dropdown.map((item) => (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              className="block p-3 text-sm font-medium text-slate-600 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-colors"
-                              onClick={() => setIsOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Quick Stats */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="mt-8 p-4 bg-gradient-to-br from-orange-50 to-indigo-50 rounded-2xl"
-                >
-                  <p className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Quick Stats</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <p className="text-xl font-black text-slate-900">10k+</p>
-                      <p className="text-xs text-slate-600">Students</p>
-                    </div>
-                    <div>
-                      <p className="text-xl font-black text-slate-900">₹5L+</p>
-                      <p className="text-xs text-slate-600">Scholarship</p>
-                    </div>
-                  </div>
                 </motion.div>
-              </div>
+              );
+            })}
+          </nav>
 
-              {/* Footer with actions */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="p-6 bg-white border-t border-slate-100 space-y-4"
-              >
-                <motion.button 
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-orange-100 hover:shadow-2xl transition-all"
+          {/* CTA - Enhanced */}
+          <motion.div 
+            className="hidden lg:block"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Link
+              href="/membership"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-amber-200/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-300/50 hover:scale-105 hover:from-amber-600 hover:to-orange-600"
+            >
+              <HeartHandshake size={18} />
+              सदस्य बनें
+              <span className="w-1.5 h-1.5 rounded-full bg-white/50 animate-pulse"></span>
+            </Link>
+          </motion.div>
+
+          {/* Mobile Button - Enhanced */}
+          <motion.button
+            type="button"
+            aria-label="Toggle Menu"
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="rounded-xl border border-slate-200 p-2.5 text-slate-800 transition-all duration-200 hover:bg-amber-50 hover:border-amber-300 lg:hidden"
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </motion.button>
+        </div>
+
+        {/* Mobile Navigation - Enhanced */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="border-t border-slate-200 bg-white/98 backdrop-blur-sm px-4 pb-6 pt-3 shadow-2xl lg:hidden"
+            >
+              <nav className="flex flex-col gap-1">
+                {navItems.map((item) => {
+                  if (item.dropdown) {
+                    return (
+                      <div key={item.name}>
+                        <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setProgramOpen(!programOpen)}
+                          className="flex w-full items-center justify-between rounded-xl px-4 py-3.5 font-semibold text-slate-700 transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50"
+                        >
+                          <span>{item.name}</span>
+
+                          <ChevronDown
+                            size={18}
+                            className={`transition-transform duration-300 ${
+                              programOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </motion.button>
+
+                        <AnimatePresence>
+                          {programOpen && (
+                            <motion.div 
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="ml-4 border-l-2 border-amber-400 pl-3"
+                            >
+                              {item.dropdown.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  href={subItem.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="block rounded-xl px-4 py-3 text-sm text-slate-600 transition-all duration-200 hover:bg-amber-50 hover:text-amber-700 hover:pl-6"
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="rounded-xl px-4 py-3.5 font-semibold text-slate-700 transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:text-amber-700"
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
+
+                {/* Mobile CTA - Enhanced */}
+                <Link
+                  href="/membership"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-4 font-bold text-white shadow-lg shadow-amber-200/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-300/50"
                 >
-                  Register Now
-                </motion.button>
-                
-                <div className="flex items-center justify-between">
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-2 text-slate-600 font-medium hover:text-orange-600 transition-colors"
-                  >
-                    <User size={16} />
-                    <span className="text-sm">Login</span>
-                  </motion.button>
-                  
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <Phone size={14} />
-                    <span className="text-sm font-medium">+91 9415289162</span>
+                  <HeartHandshake size={18} />
+                  सदस्य बनें
+                </Link>
+
+                {/* Mobile Contact Info */}
+                <div className="mt-4 pt-4 border-t border-slate-200 flex flex-col gap-2">
+                  <div className="flex items-center gap-3 text-sm text-slate-600">
+                    <Phone size={16} className="text-amber-500" />
+                    <span>+91  8881703633</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-slate-600">
+                    <Mail size={16} className="text-amber-500" />
+                    <span>info@pratibhakhoj.org</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                    <Sparkles size={12} className="text-amber-400" />
+                    <span>🌳 एक पेड़ माँ के नाम</span>
                   </div>
                 </div>
-              </motion.div>
+              </nav>
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </motion.header>
     </>
   );
-};
-
-export default Navbar;
+}
