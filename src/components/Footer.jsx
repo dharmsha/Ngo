@@ -300,16 +300,16 @@ export default function Footer() {
                     फोन
                   </p>
                   <a
-                    href="tel:+9194152 89162"
+                    href="tel:+918881703633"
                     className="mt-1 block text-sm text-slate-300 transition-all duration-300 hover:text-green-400"
                   >
-                    +91 88817 03633
+                    +91 94152 89162
                   </a>
                   <a
-                    href="tel:+919334461083"
+                    href="tel:+9194152 89162"
                     className="mt-0.5 block text-sm text-slate-400 transition-all duration-300 hover:text-green-400"
                   >
-                    +91 93344 61083
+                    +91 94152 89162
                   </a>
                 </div>
               </motion.div>
