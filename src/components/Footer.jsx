@@ -300,7 +300,7 @@ export default function Footer() {
                     फोन
                   </p>
                   <a
-                    href="tel:+918881703633"
+                    href="tel:+9194152 89162"
                     className="mt-1 block text-sm text-slate-300 transition-all duration-300 hover:text-green-400"
                   >
                     +91 88817 03633

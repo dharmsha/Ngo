@@ -77,7 +77,7 @@ export const metadata: Metadata = {
       }
     ],
     emails: ['info@pratibhakhoj.org'],
-    phoneNumbers: ['+918881703633'],
+    phoneNumbers: ['+9194152 89162'],
     countryName: 'India',
   },
   

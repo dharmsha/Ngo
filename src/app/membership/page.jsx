@@ -200,7 +200,7 @@ export default function Membership() {
                   </ul>
 
                   <Link
-                    href={`https://wa.me/918881703633?text=मैं ${tier.name} सदस्यता लेना चाहता/चाहती हूँ`}
+                    href={`https://wa.me/9194152 89162?text=मैं ${tier.name} सदस्यता लेना चाहता/चाहती हूँ`}
                     target="_blank"
                     className={`mt-6 w-full py-3 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                       tier.popular
@@ -250,7 +250,7 @@ export default function Membership() {
 
             <div className="flex-shrink-0">
               <Link
-                href="https://wa.me/918881703633"
+                href="https://wa.me/9194152 89162"
                 target="_blank"
                 className="inline-flex items-center gap-3 bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
